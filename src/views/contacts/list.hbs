@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row pt-2">
+        <div class="col text-center">
+            <h5 class="text-center">Add New Contacts</h5>
+            <hr />
+            <div class="scroll">
+                {{#each newContacts}}
+                <div class="pt-2 d-inline-block m-2 addContact" onclick="addContact({{@index}})">
+                    <div class="card contact animated fadeInUp bg-light mx-auto" style="width: 13rem;">
+                        <img src="{{avatar}}" class="card-img-top" alt="{{last_name}}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{first_name}} {{last_name}}</h5>
+                            <div class="card-text">
+                                {{email}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div class="col text-center">
+            <h5 class="text-center">Your Contacts</h5>
+            <hr />
+            <div id="contactsBD"></div>
+        </div>
+    </div>
+</div>
+<script src="public/scripts/contacts.js"></script>

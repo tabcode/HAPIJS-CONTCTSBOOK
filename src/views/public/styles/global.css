@@ -1,0 +1,90 @@
+body {
+    background-color: #181818;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='199' viewBox='0 0 100 199'%3E%3Cg fill='%23b30e21' fill-opacity='0.37'%3E%3Cpath d='M0 199V0h1v1.99L100 199h-1.12L1 4.22V199H0zM100 2h-.12l-1-2H100v2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    color: #eee;
+}
+
+.head-img {
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    background: cover no-repeat;
+    height: 200px;
+    display: flex;
+}
+
+.head-img>img {
+    object-fit: scale-down;
+    height: 200px;
+}
+
+.card {
+    border: 1px solid black;
+    border: black;
+    margin: 4px 0;
+    color: #eee;
+}
+
+.card-body {
+    background-color: black;
+}
+
+.contact::before, .contact::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: scale3d(0, 0, 1);
+    transition: transform .3s ease-out 0s;
+    background: rgba(255, 255, 255, 0.1);
+    content: '';
+    pointer-events: none
+}
+
+.contact::before {
+    transform-origin: left top
+}
+
+.contact::after {
+    transform-origin: right bottom
+}
+
+.contact:hover::before, .contact:hover::after, .contact:focus::before, .contact:focus::after {
+    transform: scale3d(1, 1, 1);
+}
+
+.navbar {
+    background-color: #181818 !important;
+}
+
+.navbar-toggler{
+    border: 0;
+}
+
+nav a,h2{
+    color: white !important;
+}
+
+nav a{
+    text-decoration: none;
+    padding-left: 10px !important;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .navbar-toggler{
+        color: white;
+    }
+    .head-img>img{
+        height: 100px;
+    }
+    .head-img{
+        padding-top: 0px;
+        height: 100px;
+    }
+    .scroll{
+        height: 350px;
+        overflow-y: auto;
+    }
+}

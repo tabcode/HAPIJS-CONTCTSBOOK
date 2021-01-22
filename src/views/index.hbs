@@ -1,0 +1,183 @@
+<div class="head-img">
+    <img src="https://miro.medium.com/max/4068/1*-QlPDWiCAcp4lNhGx07SkA.jpeg" alt="hapi js">
+</div>
+<div class="container pt-2">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <h4 class="text-center">How can you start a RESTful API with hapi.js? </h4>
+            <hr />
+            <div class="text-left">
+                <p>
+                    In this blog you are going to learn how create a RESTful API with hapi.js follow the steps below to
+                    achieve the goal.
+                </p>
+                <p>
+                    This demonstration was created with <b>Hapi Js and Typescript</b>, of course you can replace
+                    typescript
+                    by javascript
+                    but if you want create an application more clean a recommend to use <b>Typescript</b>.
+                </p>
+                <h6>What is Hapi Js?</h6>
+                <p>
+                    Hapi js is an open-source framework for developing scalable web applications.
+                    One of the most basic use case of hapi is to build REST APIs.
+                    You can build application programming interface (API) servers, websites, and HTTP proxy applications
+                    with hapi.
+                </p>
+                <h6>Creating our application</h6>
+                <p>
+                    The first step is open your terminal and type the next code:
+                <pre class="text-left"><code className="language-javascript hljs">npm init -y
+npm i @hapi/hapi
+npm i @types/hapi__hapi
+npm i @types/isomorphic-fetch
+npm i @types/node
+npm i isomorphic-fetch
+npm i nodemon
+npm i ts-node
+npm i typescript    </code></pre>
+                </p>
+                <p>
+                    these are the dependencies that we need to be able to manage our aplication, also you can notice
+                    that there are some <b>types</b>, this is because we are not using javascript as is, and typescript
+                    needs to know what type of packages needs for each dependency.
+                </p>
+                <h6>Configure the package.json</h6>
+                <p>
+                    Now the next step is configure our file called <b>package.json</b>, in the part of scripts you have
+                    to put the next script:
+                <pre><code>"build": "tsc",
+"dev": "nodemon"</code></pre>
+                    <ul>
+                        <li>"build" creates the code javascript to our browser can read the application</li>
+                        <li>"dev" restarts our aplication every time that we create a change.</li>
+                    </ul>
+                    <b>Nota:</b> nodemon only read code javascript, for nodemon to work you need to configure a file
+                    called nodemon.json, create the file in the same level to package.json with next code:
+                <pre>
+                    <code>{
+    "watch":[
+        "src"
+    ],
+    "ext":"ts hbs css",
+    "ignore":[
+        "src/**/*.spec.ts"
+    ],
+    "exec":"ts-node ./src/server.ts"
+}</code></pre>
+                </p>
+                <p>
+                    The last step of the configuration is to create the file <b>tsconfig.json</b> with the command:
+                    <pre><code>npx tsc init</code></pre>
+                    And then search <b>outDir and rootDir</b> and reconfigure them with the next lines:
+                <pre><code>"outDir": "./dist",
+"rootDir": "./src"</code></pre>
+                    And outside of <b>compilerOptions</b> add the next:
+                <pre><code>"include": [
+    "src/**/*.ts", 
+    "src/server.ts"  
+],
+"exclude": [
+    "node_modules" /* exclude everything in node_modules */
+]</code></pre>
+                </p>
+                <p>
+                    <b>Note: </b>The file <b>tsconfig.json</b> has the goal to indicate to some project that we are working with typescript.
+                    <br /><br />
+                    Congratulations the configuration is done. now the next step is configure the server,
+                    We have to create a directory called <b>src</b> and once we have created the directory
+                    we have to create the directory <b>routes</b> and the directory <b>controllers</b> inside of src
+                    and finally the file <b>server.ts</b>
+                <div>the structure would be the following:</div>
+                <ul>
+                    <li>
+                        src/
+                        <ul>
+                            <li>controllers/</li>
+                            <li>routes/</li>
+                            <li>server.ts</li>
+                        </ul>
+                    </li>
+                </ul>
+                </p>
+                <h6>Configure the server.ts</h6>
+                <p>
+                    Configure a server with hapi js is very simple like express, only import the <b>Server</b> from
+                    <b>@hapi/hapi</b> and in this case also <b>routes</b> from <b>./routes/contacts.routes</b> (this import will be explained later)
+                    <br /><br />
+                    Then we create a function called init() with the configuration of our server. Inside of the function
+                    we have to create a port to our application and then create a new Server with the port configured
+                    and finally start the server.
+                    as you can see in the next code:
+                <pre><code>import { Server } from "@hapi/hapi";
+import { routes } from './routes/contacts.routes';
+const init = async () => {
+    const PORT: string | number = process.env.PORT || 3000;
+    const server: Server = new Server({
+        port: PORT
+    });
+
+    routes(server);
+    await server.start();
+};
+init();</code></pre>
+                    As you can see typescript is a bit different than javascript, but initialize a server is very simple
+                    only configure a port and create a new server instance with the port, and then you declare the routes.
+                    <br /><br />
+                    In this case we created another file called <b>contacts.routes.ts</b> in the directory <b>routes/</b> and only import <b>routes</b>.
+                </p>
+                <h6>Configuring the contacts.routes.ts</h6>
+                <p>
+                    In this file we can create all the routes (<b>GET, POST, DELETE, PUT</b>) we want, in this case only we have one route(<b>/app</b>)
+                    <br><br>
+                    <b>Note:</b> A route has the next parameters:
+                    <ul>
+                        <li>method:"GET | POST | PUT | DELETE"</li>
+                        <li>path:"the route of the request"</li>
+                        <li>handler:"this is a process(function) inside the route"</li>
+                    </ul>
+                    And finally the file has the next code:
+                <pre><code>import { Server } from '@hapi/hapi';
+import { app } from '../controllers/contacts.controller';
+
+export const routes = (server: Server) => {
+    server.route({
+        method: 'GET',
+        path: '/app',
+        handler: app
+    });
+};</code></pre>
+                    <b>Note:</b> you can notice that we have another import from <b>../controllers/contacts.controller</b> and this is because 
+                    most of the case is better to separate the controller with the aim of better managing routes.
+                </p>
+                <h6>Configure the contacts.controller.ts</h6>
+                <p>
+                    In this file we can find one or more functions, for example
+                    to this application we created a function called <b>app</b>, this function has the aim of returning
+                    a list of new contacts with a public api.
+                    <br /><br />
+                    You can copy the code and paste this in your file.
+                <pre><code>import { Request, ResponseObject, ResponseToolkit } from '@hapi/hapi';
+import fetch from 'isomorphic-fetch';
+
+export const app = async (request: Request, h: ResponseToolkit): Promise<ResponseObject> => {
+    try {
+        const newContacts = (await (await fetch('https://reqres.in/api/users')).json()).data;
+        return h.response(newContacts);
+    } catch (error) {
+        return h.response(error).code(500);
+    }
+};</code></pre>
+                    Now the final step is open a terminal inside of your project and type <b>npm run build</b> to create your code javascript and then type <b>npm run dev</b> to start the server and
+                    if you go to your browser and type the next <a target="_black"
+                        href="localhost:3000/app">localhost:3000/app</a>, you have
+                    to get a JSON with six different contacts.
+                </p>
+                <p>
+                    Now you can use your imagination to create a new routes, functions, whatever you want to improve your app,
+                    also you can use templates like express for example <b>Handlebars</b> if you want to create also your frontend in the same aplication.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
